@@ -3,6 +3,7 @@
 import collections
 import functools
 import itertools as sync_itertools
+import inspect
 import operator
 import types
 
@@ -248,15 +249,12 @@ def repeat(obj, times=None):
 
 def _async_callable(func):
     """Ensure the callable is an async def."""
-    if isinstance(func, types.CoroutineType):
-
+    if inspect.iscoroutinefunction(func):
         return func
-
     @functools.wraps(func)
     async def _async_def_wrapper(*args, **kwargs):
         """Wrap a a sync callable in an async def."""
         return func(*args, **kwargs)
-
     return _async_def_wrapper
 
 

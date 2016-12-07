@@ -13,6 +13,10 @@ import pytest
 import aitertools
 
 
+async def dummy_coro():
+    return 1
+
+
 def async_test(loop=None):
     """Wrap an async test in a run_until_complete for the event loop."""
     loop = loop or asyncio.get_event_loop()
@@ -27,6 +31,14 @@ def async_test(loop=None):
         return _inner_async_wrapper
 
     return _outer_async_wrapper
+
+
+@async_test()
+@pytest.mark.parametrize('callable', (lambda: 1, dummy_coro))
+async def test_async_callable(callable):
+    async_callable = aitertools._async_callable(callable)
+    result = await async_callable()
+    assert 1 == result
 
 
 @async_test()
@@ -452,7 +464,7 @@ async def test_filterfalse_too_many_args():
         await aitertools.anext(aitertools.filterfalse(1, 2, 3))
 
 
-@async_test()
+@pytest.mark.asyncio()
 async def test_filterfalse_predicate_not_callable():
     """Check that filterfalse raise TypeError when predicate not callable."""
     with pytest.raises(TypeError):

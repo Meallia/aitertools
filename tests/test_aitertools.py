@@ -36,6 +36,7 @@ def async_test(loop=None):
 @async_test()
 @pytest.mark.parametrize('callable', (lambda: 1, dummy_coro))
 async def test_async_callable(callable):
+    """Checks that _async_callable isn't changing coroutines"""
     async_callable = aitertools._async_callable(callable)
     result = await async_callable()
     assert 1 == result

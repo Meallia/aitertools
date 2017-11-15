@@ -570,6 +570,7 @@ async def test_groupby_unused_group_iterable():
         (10, 20),
         (10, 3),
         (20,),
+        (1,),
     ),
 )
 async def test_islice_matches_range(args):

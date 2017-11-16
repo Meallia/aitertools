@@ -1,10 +1,14 @@
 language: python
-sudo: false
 python:
   - "3.5"
+  - "3.5-dev"
   - "3.6"
   - "3.6-dev"
+  - "3.7-dev"
   - "nightly"
+before_install:
+  - sudo apt-get -qq update
+  - sudo apt-get install -y libenchant-dev
 install:
     - pip install -r test-requirements.txt
     - pip install -e ./

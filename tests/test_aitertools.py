@@ -562,6 +562,7 @@ async def test_groupby_unused_group_iterable():
     result = set(key for key, group in result)
     assert result == set([s[0] for s in seed])
 
+
 @given(args=st.one_of(
     st.tuples(st.integers(0, 100)),
     st.tuples(st.integers(0, 100), st.integers(0, 100)),
@@ -574,7 +575,6 @@ async def test_groupby_unused_group_iterable():
 @example(args=(0, 1))
 @example(args=(20,))
 @example(args=(1,))
-
 @async_test()
 async def test_islice_matches_range(args):
     """Check happy path for islice using equivalent range arguments."""

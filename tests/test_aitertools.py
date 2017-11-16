@@ -5,6 +5,8 @@ import decimal
 import fractions
 import functools
 import operator
+from hypothesis import given, example
+from hypothesis import strategies as st
 
 import pytest
 
@@ -560,19 +562,20 @@ async def test_groupby_unused_group_iterable():
     result = set(key for key, group in result)
     assert result == set([s[0] for s in seed])
 
+@given(args=st.one_of(
+    st.tuples(st.integers(0, 100)),
+    st.tuples(st.integers(0, 100), st.integers(0, 100)),
+    st.tuples(st.integers(0, 100), st.integers(0, 100), st.integers(1, 100)),
+    ))
+@example(args=(10, 20, 3))
+@example(args=(10, 3, 20))
+@example(args=(10, 20))
+@example(args=(10, 3))
+@example(args=(0, 1))
+@example(args=(20,))
+@example(args=(1,))
 
 @async_test()
-@pytest.mark.parametrize(
-    'args',
-    (
-        (10, 20, 3),
-        (10, 3, 20),
-        (10, 20),
-        (10, 3),
-        (20,),
-        (1,),
-    ),
-)
 async def test_islice_matches_range(args):
     """Check happy path for islice using equivalent range arguments."""
     assert (await aitertools.alist(

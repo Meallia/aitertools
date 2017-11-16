@@ -724,9 +724,14 @@ class AsyncISlice:
 
             value = await anext(self._iterable)
             self._offset = self._offset + 1
-            if self._stop is not None and self._offset >= self._stop:
+            if self._stop is not None:
+                if self._stop - self._start == 1:
 
-                raise StopAsyncIteration()
+                    return value
+
+                if self._offset >= self._stop:
+
+                    raise StopAsyncIteration()
 
             return value
 

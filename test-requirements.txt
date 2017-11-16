@@ -5,3 +5,4 @@ pyflakes
 pylint
 pytest
 pytest-cov
+hypothesis

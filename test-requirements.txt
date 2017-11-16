@@ -1,5 +1,5 @@
 pep257
-pep8
+pycodestyle
 pyenchant
 pyflakes
 pylint

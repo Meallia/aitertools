@@ -91,7 +91,7 @@ async def aiter(*args):
 
     if hasattr(obj, '__aiter__'):
 
-        return (await obj.__aiter__())
+        return await obj.__aiter__()
 
     if hasattr(obj, '__iter__') or hasattr(obj, '__next__'):
 
@@ -251,6 +251,7 @@ def _async_callable(func):
     """Ensure the callable is an async def."""
     if inspect.iscoroutinefunction(func):
         return func
+
     @functools.wraps(func)
     async def _async_def_wrapper(*args, **kwargs):
         """Wrap a a sync callable in an async def."""
@@ -463,7 +464,7 @@ class AsyncDropWhile:
         while not self._found:
 
             value = await anext(self._iterable)
-            self._found = not (await self._predicate(value))
+            self._found = not await self._predicate(value)
             if self._found:
 
                 return value
@@ -826,7 +827,7 @@ class AsyncTakeWhile:
             raise StopAsyncIteration()
 
         value = await anext(self._iterable)
-        self._stop = not (await self._predicate(value))
+        self._stop = not await self._predicate(value)
 
         if self._stop:
 
